@@ -16,19 +16,19 @@ export default function Index({auth}) {
     return (
         <AuthenticatedLayout
             user={auth.user}
-            header={<h2 className='text-xl font-semibold leading-tight text-gray-800'>Permissions</h2>}
+            header={<h2 className="text-xl font-semibold leading-tight text-gray-800">Permissions</h2>}
         >
-            <Head title={'Permissions'}/>
+            <Head title={"Permissions"}/>
             <Container>
-                <div className='flex items-center justify-between gap-4 mb-4'>
-                    {hasAnyPermission(['permissions create']) &&
-                        <Button type={'add'} url={route('permissions.create')}/>
+                <div className="flex items-center justify-between gap-4 mb-4">
+                    {hasAnyPermission(["permissions create"]) &&
+                        <Button type={"add"} url={route("permissions.create")}/>
                     }
-                    <div className='w-full md:w-4.6'>
-                        <Search url={route('permissions.index')} placeholder={'Search permissions data by name...'} filter={filters}/>
+                    <div className="w-full md:w-4.6">
+                        <Search url={route("permissions.index")} placeholder={"Search permissions data by name..."} filter={filters}/>
                     </div>
                 </div>
-                <Table.Card title={'Permissions'}>
+                <Table.Card title={"Permissions"}>
                     <Table>
                         <Table.Thead>
                             <tr>
@@ -43,12 +43,12 @@ export default function Index({auth}) {
                                     <Table.Td>{++i + (permissions.current_page-1) * permissions.per_page}</Table.Td>
                                     <Table.Td>{permission.name}</Table.Td>
                                     <Table.Td>
-                                        <div className='flex gap-2 item-center'>
-                                            {hasAnyPermission(['permissions edit']) &&
-                                                <Button type={'edit'} url={route('permissions.edit', permission.id)}/>
+                                        <div className="flex gap-2 item-center">
+                                            {hasAnyPermission(["permissions edit"]) &&
+                                                <Button type={"edit"} url={route("permissions.edit", permission.id)}/>
                                             }
-                                            {hasAnyPermission(['permissions delete']) &&
-                                                <Button type={'delete'} url={route('permissions.destroy', permission.id)}/>
+                                            {hasAnyPermission(["permissions delete"]) &&
+                                                <Button type={"delete"} url={route("permissions.destroy", permission.id)}/>
                                             }
                                         </div>
                                     </Table.Td>
@@ -57,7 +57,7 @@ export default function Index({auth}) {
                         </Table.Tbody>
                     </Table>
                 </Table.Card>
-                <div className='fle item-center justity-center'>
+                <div className="fle item-center justity-center">
                     {permissions.last_page !== 1 && (<Pagination links={permissions.links}/>)}
                 </div>
             </Container>
