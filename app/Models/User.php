@@ -48,7 +48,7 @@ class User extends Authenticatable
         ];
     }
 
-    public function getUserPermission()
+    public function getUserPermissions()
     {
         return $this->getAllPermissions()->mapWithKeys(fn($permission) =>[$permission['name'] => true]);
     }
