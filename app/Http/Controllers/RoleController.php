@@ -83,7 +83,22 @@ class RoleController extends Controller implements HasMiddleware
      */
     public function edit(Role $role)
     {
-        //
+        // get permissions
+        $data = Permission::orderBy('name')->pluck('name', 'id');
+        $collection = collect($data);
+        $permissions = $collection->groupBy(function ($item, $key){
+            // memecah string menjadi array kata-kata
+            $words = explode(' ', $item);
+
+            // mengambil kata pertama
+            return $words[0];
+        });
+
+        // load permission
+        $role->load('permissions');
+
+        // render view
+        return inertia('Roles/Edit', ['role' => $role,'permissions' => $permissions]);
     }
 
     /**
@@ -91,7 +106,20 @@ class RoleController extends Controller implements HasMiddleware
      */
     public function update(Request $request, Role $role)
     {
-        //
+        // validate request
+        $request->validate([
+            'name' => 'required|min:3|max:255|unique:roles,name,'.$role->id,
+            'selectedPermissions' => 'required|array|min:1',
+        ]);
+
+        // update role data
+        $role->update(['name' => $request->name]);
+
+        // give permission to role
+        $role->syncPermissions($request->selectedPermissions);
+
+        // render view
+        return to_route('roles.index');
     }
 
     /**
@@ -99,6 +127,10 @@ class RoleController extends Controller implements HasMiddleware
      */
     public function destroy(Role $role)
     {
-        //
+        // delete role data
+        $role->delete();
+
+        // render view
+        return back();
     }
 }
