@@ -14,23 +14,23 @@ class UserController extends Controller
     public static function middleware()
     {
         return [
-            new Middleware('permission:users index', only: ['index']),
-            new Middleware('permission:users create', only: ['create', 'store']),
-            new Middleware('permission:users edit', only: ['edit', 'update']),
-            new Middleware('permission:users delete', only: ['destroy']),
+            new Middleware("permission:users index", only: ["index"]),
+            new Middleware("permission:users create", only: ["create", "store"]),
+            new Middleware("permission:users edit", only: ["edit", "update"]),
+            new Middleware("permission:users delete", only: ["destroy"]),
         ];
     }
 
     public function index(Request $request)
     {
         // get all users
-        $users = User::with('roles')
-            ->when(request('search'), fn($query) => $query->where('name', 'like', '%'.request('search').'%'))
-            ->orderBy('id', 'ASC')
+        $users = User::with("roles")
+            ->when(request("search"), fn($query) => $query->where("name", "like", "%".request("search")."%"))
+            ->orderBy("id", "ASC")
             ->paginate(6);
 
         // render view
-        return inertia('Users/Index', ['users' => $users, 'filters' => $request->only(['search'])]);
+        return inertia("Users/Index", ["users" => $users, "filters" => $request->only(["search"])]);
     }
 
     /**
@@ -41,7 +41,7 @@ class UserController extends Controller
         // get roles
         $roles = Role::latest()->get();
         // render view
-        return inertia('Users/Create', ['roles' => $roles]);
+        return inertia("Users/Create", ["roles" => $roles]);
     }
 
     /**
@@ -51,26 +51,26 @@ class UserController extends Controller
     {
         // validate request
         $request->validate([
-            'name' => 'required|min:3|max:255',
-            'email' => 'required|email|unique:users',
-            'phone' => 'required',
-            'password' => 'required|confirmed|min:4',
-            'selectedRoles' => 'required|array|min:1',
+            "name" => "required|min:3|max:255",
+            "email" => "required|email|unique:users",
+            "phone" => "required",
+            "password" => "required|confirmed|min:4",
+            "selectedRoles" => "required|array|min:1",
         ]);
 
         // create user
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'password' => bcrypt($request->password),
+            "name" => $request->name,
+            "email" => $request->email,
+            "phone" => $request->phone,
+            "password" => bcrypt($request->password),
         ]);
 
         // attach roles
         $user->assignRole($request->selectedRoles);
 
         // render view
-        return to_route('users.index');
+        return to_route("users.index");
     }
 
     /**
@@ -79,13 +79,13 @@ class UserController extends Controller
     public function edit(User $user)
     {
         // get roles
-        $roles = Role::where('name', '!=', 'admin')->get();
+        $roles = Role::where("name", "!=", "admin")->get();
 
         //  load roles
-        $user->load('roles');
+        $user->load("roles");
 
         // render view
-        return inertia('Users/Edit', ['user' => $user, 'roles' => $roles]);
+        return inertia("Users/Edit", ["user" => $user, "roles" => $roles]);
     }
 
     /**
@@ -95,24 +95,24 @@ class UserController extends Controller
     {
         // validate request
         $request->validate([
-            'name' => 'required|min:3|max:255',
-            'email' => 'required|email|unique:users,email,'.$user->id,
-            'phone' => 'required',
-            'selectedRoles' => 'required|array|min:1',
+            "name" => "required|min:3|max:255",
+            "email" => "required|email|unique:users,email,".$user->id,
+            "phone" => "required",
+            "selectedRoles" => "required|array|min:1",
         ]);
 
         // update user data
         $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
+            "name" => $request->name,
+            "email" => $request->email,
+            "phone" => $request->phone,
         ]);
 
         // attach roles
         $user->syncRoles($request->selectedRoles);
 
         // render view
-        return to_route('users.index');
+        return to_route("users.index");
     }
 
     /**
