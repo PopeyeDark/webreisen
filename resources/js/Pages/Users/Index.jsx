@@ -15,22 +15,22 @@ export default function Index({auth}) {
         <AuthenticatedLayout
             user={auth.user}
             header={
-                <h2 className='text-xl font-semibold leading-tight text-gray-800'>
+                <h2 className="text-xl font-semibold leading-tight text-gray-800">
                     Users
                 </h2>
             }
         >
-            <Head title={'Users'}/>
+            <Head title={"Users"}/>
             <Container>
-                <div className='flex items-center justify-between gap-4 mb-4'>
-                    {hasAnyPermission(['users create']) &&
-                        <Button type={'add'} url={route('users.create')}/>
+                <div className="flex items-center justify-between gap-4 mb-4">
+                    {hasAnyPermission(["users create"]) &&
+                        <Button type={"add"} url={route("users.create")}/>
                     }
-                    <div className='w-full md:w-4.6'>
-                        <Search url={route('users.index')} placeholder={'Search users data by name...'} filter={filters}/>
+                    <div className="w-full md:w-4.6">
+                        <Search url={route("users.index")} placeholder={"Search users data by name..."} filter={filters}/>
                     </div>
                 </div>
-                <Table.Card title={'Users'}>
+                <Table.Card title={"Users"}>
                     <Table>
                         <Table.Thead>
                             <tr>
@@ -67,7 +67,7 @@ export default function Index({auth}) {
                                         </div>
                                     </Table.Td>
                                     <Table.Td>
-                                        <div className='flex gap-2 item-center'>
+                                        <div className="flex gap-2 item-center">
                                             {hasAnyPermission(["users edit"
 
                                             ]) && (
@@ -85,7 +85,7 @@ export default function Index({auth}) {
                         </Table.Tbody>
                     </Table>
                 </Table.Card>
-                <div className='flex items-center justify-center'>
+                <div className="flex items-center justify-center">
                     {users.last_page !== 1 && (<Pagination links={users.links}/>)}
                 </div>
             </Container>
