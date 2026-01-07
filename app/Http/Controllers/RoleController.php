@@ -14,10 +14,10 @@ class RoleController extends Controller implements HasMiddleware
     public static function middleware()
     {
         return [
-            new Middleware('permission:roles index', only: ['index']),
-            new Middleware('permission:roles create', only: ['create', 'store']),
-            new Middleware('permission:roles edit', only: ['edit', 'update']),
-            new Middleware('permission:roles delete', only: ['destroy']),
+            new Middleware("permission:roles index", only: ["index"]),
+            new Middleware("permission:roles create", only: ["create", "store"]),
+            new Middleware("permission:roles edit", only: ["edit", "update"]),
+            new Middleware("permission:roles delete", only: ["destroy"]),
         ];
     }
 
@@ -26,14 +26,14 @@ class RoleController extends Controller implements HasMiddleware
      */
     public function index(Request $request)
     {
-        $roles = Role::select('id', 'name')
-                ->with('permissions:id,name')
-                ->when($request->search, fn($search) => $search->where('name', 'like','%'.$request->search.'%'))
+        $roles = Role::select("id", "name")
+                ->with("permissions:id,name")
+                ->when($request->search, fn($search) => $search->where("name", "like","%".$request->search."%"))
                 ->latest()
                 ->paginate(6);
 
         // render view
-        return inertia('Roles/Index', ['roles' => $roles, 'filters' => $request->only(['search'])]);
+        return inertia("Roles/Index", ["roles" => $roles, "filters" => $request->only(["search"])]);
     }
 
     /**
@@ -43,18 +43,18 @@ class RoleController extends Controller implements HasMiddleware
     {
         // get permissions
         // $permissions = Permission::all();
-        $data = Permission::orderBy('name')->pluck('name', 'id');
+        $data = Permission::orderBy("name")->pluck("name", "id");
         $collection = collect($data);
         $permissions = $collection->groupBy(function($item, $key){
             // Memecah string menjadi array kata-kata
-            $words = explode(' ', $item);
+            $words = explode(" ", $item);
 
             // Mengambil kata pertama
             return $words[0];
         });
         // return $permissions;
         // render view
-        return inertia('Roles/Create', ['permissions' => $permissions]);
+        return inertia("Roles/Create", ["permissions" => $permissions]);
     }
 
     /**
@@ -64,18 +64,18 @@ class RoleController extends Controller implements HasMiddleware
     {
         // validate request
         $request->validate([
-            'name' => 'required|min:3|max:255|unique:roles',
-            'selectedPermissions' => 'required|array|min:1',
+            "name" => "required|min:3|max:255|unique:roles",
+            "selectedPermissions" => "required|array|min:1",
         ]);
 
         // create new role data
-        $role = Role::Create(['name' =>$request->name]);
+        $role = Role::Create(["name" =>$request->name]);
 
         // give permissions to role
         $role->givePermissionTo($request->selectedPermissions);
 
         // render view
-        return to_route('roles.index');
+        return to_route("roles.index");
     }
 
     /**
@@ -84,21 +84,21 @@ class RoleController extends Controller implements HasMiddleware
     public function edit(Role $role)
     {
         // get permissions
-        $data = Permission::orderBy('name')->pluck('name', 'id');
+        $data = Permission::orderBy("name")->pluck("name", "id");
         $collection = collect($data);
         $permissions = $collection->groupBy(function ($item, $key){
             // memecah string menjadi array kata-kata
-            $words = explode(' ', $item);
+            $words = explode(" ", $item);
 
             // mengambil kata pertama
             return $words[0];
         });
 
         // load permission
-        $role->load('permissions');
+        $role->load("permissions");
 
         // render view
-        return inertia('Roles/Edit', ['role' => $role,'permissions' => $permissions]);
+        return inertia("Roles/Edit", ["role" => $role,"permissions" => $permissions]);
     }
 
     /**
@@ -108,18 +108,18 @@ class RoleController extends Controller implements HasMiddleware
     {
         // validate request
         $request->validate([
-            'name' => 'required|min:3|max:255|unique:roles,name,'.$role->id,
-            'selectedPermissions' => 'required|array|min:1',
+            "name" => "required|min:3|max:255|unique:roles,name,".$role->id,
+            "selectedPermissions" => "required|array|min:1",
         ]);
 
         // update role data
-        $role->update(['name' => $request->name]);
+        $role->update(["name" => $request->name]);
 
         // give permission to role
         $role->syncPermissions($request->selectedPermissions);
 
         // render view
-        return to_route('roles.index');
+        return to_route("roles.index");
     }
 
     /**

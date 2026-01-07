@@ -7,6 +7,7 @@ use Inertia\Inertia;
 
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -24,6 +25,9 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
     // permission route
     Route::resource('/permissions', PermissionController::class);
+
+    // permission route
+    Route::resource('/users', UserController::class);
 
     // permission route
     Route::resource('/roles', RoleController::class)->except('show');
