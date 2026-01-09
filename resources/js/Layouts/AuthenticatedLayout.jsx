@@ -1,10 +1,10 @@
-import ApplicationLogo from '@/Components/ApplicationLogo';
-import Dropdown from '@/Components/Dropdown';
-import NavLink from '@/Components/NavLink';
-import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
-import { Link, usePage } from '@inertiajs/react';
-import { useState } from 'react';
-import hasAnyPermission from '@/Utils/Permissions';
+import ApplicationLogo from "@/Components/ApplicationLogo";
+import Dropdown from "@/Components/Dropdown";
+import NavLink from "@/Components/NavLink";
+import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
+import { Link, usePage } from "@inertiajs/react";
+import { useState } from "react";
+import hasAnyPermission from "@/Utils/Permissions";
 
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
@@ -25,12 +25,12 @@ export default function AuthenticatedLayout({ header, children }) {
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink href={route('dashboard')} active={route().current('dashboard')}>
+                                <NavLink href={route("dashboard")} active={route().current("dashboard")}>
                                     Dashboard
                                 </NavLink>
 
-                                {hasAnyPermission(['permissions index']) && (
-                                    <NavLink href={route('permissions.index')} active={route().current('permissions*')}>
+                                {hasAnyPermission(["permissions index"]) && (
+                                    <NavLink href={route("permissions.index")} active={route().current("permissions*")}>
                                         Permissions
                                     </NavLink>
                                 )}
@@ -39,14 +39,19 @@ export default function AuthenticatedLayout({ header, children }) {
                                         Roles
                                     </NavLink>
                                 )}
-                                {hasAnyPermission(['users index']) && (
-                                    <NavLink href={route('users.index')} active={route().current('users*')}>
+                                {hasAnyPermission(["users index"]) && (
+                                    <NavLink href={route("users.index")} active={route().current("users*")}>
                                         Users
                                     </NavLink>
                                 )}
-                                {hasAnyPermission(['categories index']) && (
-                                    <NavLink href={route('categories.index')} active={route().current('categories*')}>
+                                {hasAnyPermission(["categories index"]) && (
+                                    <NavLink href={route("categories.index")} active={route().current("categories*")}>
                                         Categories
+                                    </NavLink>
+                                )}
+                                {hasAnyPermission(["locations index"]) && (
+                                    <NavLink href={route("locations.index")} active={route().current("locations*")}>
+                                        Locations
                                     </NavLink>
                                 )}
                             </div>
@@ -81,12 +86,12 @@ export default function AuthenticatedLayout({ header, children }) {
 
                                     <Dropdown.Content>
                                         <Dropdown.Link
-                                            href={route('profile.edit')}
+                                            href={route("profile.edit")}
                                         >
                                             Profile
                                         </Dropdown.Link>
                                         <Dropdown.Link
-                                            href={route('logout')}
+                                            href={route("logout")}
                                             method="post"
                                             as="button"
                                         >
@@ -115,8 +120,8 @@ export default function AuthenticatedLayout({ header, children }) {
                                     <path
                                         className={
                                             !showingNavigationDropdown
-                                                ? 'inline-flex'
-                                                : 'hidden'
+                                                ? "inline-flex"
+                                                : "hidden"
                                         }
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
@@ -126,8 +131,8 @@ export default function AuthenticatedLayout({ header, children }) {
                                     <path
                                         className={
                                             showingNavigationDropdown
-                                                ? 'inline-flex'
-                                                : 'hidden'
+                                                ? "inline-flex"
+                                                : "hidden"
                                         }
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
@@ -142,36 +147,41 @@ export default function AuthenticatedLayout({ header, children }) {
 
                 <div
                     className={
-                        (showingNavigationDropdown ? 'block' : 'hidden') +
-                        ' sm:hidden'
+                        (showingNavigationDropdown ? "block" : "hidden") +
+                        " sm:hidden"
                     }
                 >
                     <div className="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink
-                            href={route('dashboard')}
-                            active={route().current('dashboard')}
+                            href={route("dashboard")}
+                            active={route().current("dashboard")}
                         >
                             Dashboard
                         </ResponsiveNavLink>
 
-                        {hasAnyPermission(['permissions index']) && (
-                            <ResponsiveNavLink href={route('permissions.index')} active={route().current('permissions*')}>
+                        {hasAnyPermission(["permissions index"]) && (
+                            <ResponsiveNavLink href={route("permissions.index")} active={route().current("permissions*")}>
                                 Permissions
                             </ResponsiveNavLink>
                         )}
-                        {hasAnyPermission(['roles index']) && (
-                            <ResponsiveNavLink href={route('roles.index')} active={route().current('roles*')}>
+                        {hasAnyPermission(["roles index"]) && (
+                            <ResponsiveNavLink href={route("roles.index")} active={route().current("roles*")}>
                                 Roles
                             </ResponsiveNavLink>
                         )}
-                        {hasAnyPermission(['users index']) && (
-                            <ResponsiveNavLink href={route('users.index')} active={route().current('users*')}>
+                        {hasAnyPermission(["users index"]) && (
+                            <ResponsiveNavLink href={route("users.index")} active={route().current("users*")}>
                                 Users
                             </ResponsiveNavLink>
                         )}
-                        {hasAnyPermission(['categories index']) && (
-                            <ResponsiveNavLink href={route('categories.index')} active={route().current('categories*')}>
+                        {hasAnyPermission(["categories index"]) && (
+                            <ResponsiveNavLink href={route("categories.index")} active={route().current("categories*")}>
                                 Categories
+                            </ResponsiveNavLink>
+                        )}
+                        {hasAnyPermission(["locations index"]) && (
+                            <ResponsiveNavLink href={route("locations.index")} active={route().current("locations*")}>
+                                Locations
                             </ResponsiveNavLink>
                         )}
                     </div>
@@ -187,12 +197,12 @@ export default function AuthenticatedLayout({ header, children }) {
                         </div>
 
                         <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route('profile.edit')}>
+                            <ResponsiveNavLink href={route("profile.edit")}>
                                 Profile
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
                                 method="post"
-                                href={route('logout')}
+                                href={route("logout")}
                                 as="button"
                             >
                                 Log Out
